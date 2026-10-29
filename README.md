@@ -2,7 +2,7 @@
 
 Site vitrine et boutique des kits d'extensions de cils Lashéane.
 
-- **Hébergement :** Cloudflare Pages (gratuit)
+- **Hébergement :** Cloudflare Workers (gratuit), relié à ce dépôt GitHub
 - **Administration :** Decap CMS, à l'adresse `/admin` du site. La cliente y modifie textes, prix, photos, couleurs, livraison et réseaux sociaux sans toucher au code.
 - **Paiement :** Stripe Checkout. L'argent arrive sur l'IBAN enregistré dans le compte Stripe de la cliente.
 
@@ -15,37 +15,35 @@ Site vitrine et boutique des kits d'extensions de cils Lashéane.
 | `static/admin/` | L'espace d'administration (Decap CMS) |
 | `src/` | Mise en forme (`styles.css`) et panier (`app.js`) |
 | `functions/api/` | Paiement Stripe (`checkout.js`) et connexion à l'administration (`auth.js`, `callback.js`) |
+| `worker/index.js` | Point d'entrée Cloudflare : dirige `/api/...` vers les fonctions ci-dessus, et le reste vers les pages |
+| `wrangler.jsonc` | Réglages Cloudflare (nom du projet, construction, dossier publié) |
 | `build.mjs` | Assemble le site dans `dist/` à chaque modification |
 
 ## Mise en ligne (à faire une seule fois)
 
-### 1. Publier le site sur Cloudflare Pages
+### 1. Publier le site sur Cloudflare
 
-1. Créer un compte gratuit sur [dash.cloudflare.com](https://dash.cloudflare.com).
-2. Aller dans **Workers & Pages** › **Créer** › onglet **Pages** › **Se connecter à Git**, puis choisir ce dépôt GitHub.
-3. Réglages de construction :
-   - Préréglage du framework : **Aucun**
-   - Commande de construction : `node build.mjs`
-   - Répertoire de sortie : `dist`
-4. Cliquer sur **Enregistrer et déployer**. Noter l'adresse obtenue, du type `https://lasheane.pages.dev`.
+Le projet Cloudflare **lasheane** (Workers & Pages) est relié à ce dépôt. À chaque modification enregistrée sur GitHub, que ce soit depuis l'administration ou dans le code, Cloudflare lance `npx wrangler deploy`. Cette commande construit le site avec `node build.mjs`, comme indiqué dans `wrangler.jsonc`, puis le met en ligne. Aucun réglage de construction n'est à saisir dans Cloudflare.
+
+L'adresse du site s'affiche dans Cloudflare, sur la page du projet, sous la forme `https://lasheane.<nom-du-compte>.workers.dev`.
 
 ### 2. Activer la connexion à l'administration
 
 1. Sur GitHub : **Settings** › **Developer settings** › **OAuth Apps** › **New OAuth App**.
    - Application name : `Lashéane admin`
-   - Homepage URL : `https://lasheane.pages.dev` (l'adresse du site)
-   - Authorization callback URL : `https://lasheane.pages.dev/api/callback`
+   - Homepage URL : l'adresse du site (exemple : `https://lasheane.xxx.workers.dev`)
+   - Authorization callback URL : la même adresse suivie de `/api/callback`
 2. Copier le **Client ID**, puis cliquer sur **Generate a new client secret** et copier le secret.
-3. Dans Cloudflare, ouvrir le projet › **Paramètres** › **Variables et secrets**, puis ajouter, en type **Secret** :
+3. Dans Cloudflare, ouvrir le projet **lasheane** › **Settings** › **Variables and Secrets** (la rubrique du haut, pas celle de la partie « Build »). Ajouter, en type **Secret** :
    - `GITHUB_CLIENT_ID` : le Client ID
    - `GITHUB_CLIENT_SECRET` : le secret
-4. Relancer un déploiement (**Déploiements** › dernier déploiement › **Réessayer le déploiement**).
+4. Les secrets sont actifs dès leur enregistrement.
 
 ### 3. Activer le paiement Stripe (compte de la cliente)
 
 1. La cliente crée son compte sur [stripe.com](https://stripe.com) et l'active avec son identité et son IBAN.
 2. Dans Stripe : **Développeurs** › **Clés API**, puis copier la **clé secrète**. Elle commence par `sk_test_` en mode test et par `sk_live_` en mode réel.
-3. Dans Cloudflare, ajouter le secret `STRIPE_SECRET_KEY`, puis relancer un déploiement.
+3. Dans Cloudflare, ajouter le secret `STRIPE_SECRET_KEY` au même endroit que les secrets GitHub.
 4. Dans Stripe : **Paramètres** › **E-mails clients**, activer l'envoi d'un reçu après chaque paiement réussi.
 5. Tester avec la clé `sk_test_` et la carte `4242 4242 4242 4242` (date future, n'importe quel code). Remplacer ensuite la clé par `sk_live_` pour le lancement.
 
@@ -56,11 +54,11 @@ Site vitrine et boutique des kits d'extensions de cils Lashéane.
 
 ### 5. Nom de domaine (facultatif)
 
-Dans Cloudflare : projet › **Domaines personnalisés**. Une fois le domaine actif, mettre à jour les deux adresses de l'OAuth App GitHub (étape 2) avec le nouveau domaine.
+Dans Cloudflare : projet **lasheane** › **Settings** › **Domains & Routes** › **Add** › **Custom domain**. Une fois le domaine actif, remplacer les deux adresses de l'OAuth App GitHub (étape 2) par le nouveau domaine.
 
 ## Guide de la cliente
 
-1. Aller sur l'adresse du site suivie de `/admin` (exemple : `https://lasheane.pages.dev/admin`).
+1. Aller sur l'adresse du site suivie de `/admin` (exemple : `https://lasheane.xxx.workers.dev/admin`).
 2. Cliquer sur **Se connecter avec GitHub**.
 3. Choisir une rubrique :
    - **Prix, offre et livraison** : offre de lancement, frais et délais de livraison, pays livrés

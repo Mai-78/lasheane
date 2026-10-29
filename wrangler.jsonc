@@ -1,0 +1,20 @@
+// Configuration Cloudflare Workers du site Lashéane.
+// À chaque envoi sur GitHub, Cloudflare lance « npx wrangler deploy » :
+// le site est d'abord construit (node build.mjs) dans dist/, puis mis en ligne.
+{
+  "name": "lasheane",
+  "main": "worker/index.js",
+  "compatibility_date": "2025-10-01",
+  "build": {
+    "command": "node build.mjs"
+  },
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS"
+  },
+  // Garde les variables et secrets saisis dans le tableau de bord Cloudflare.
+  "keep_vars": true,
+  "observability": {
+    "enabled": true
+  }
+}

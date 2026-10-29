@@ -60,7 +60,7 @@ export async function onRequestPost(context) {
   const params = new URLSearchParams();
   params.append("mode", "payment");
   params.append("locale", "fr");
-  params.append("success_url", `${origine}/merci.html?session_id={CHECKOUT_SESSION_ID}`);
+  params.append("success_url", `${origine}/merci?session_id={CHECKOUT_SESSION_ID}`);
   params.append("cancel_url", `${origine}/#collection`);
   params.append("allow_promotion_codes", "true");
   params.append("phone_number_collection[enabled]", "true");
@@ -106,14 +106,20 @@ export async function onRequestPost(context) {
     }
   }
 
-  const reponse = await fetch("https://api.stripe.com/v1/checkout/sessions", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${env.STRIPE_SECRET_KEY}`,
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body: params.toString(),
-  });
+  let reponse;
+  try {
+    reponse = await fetch("https://api.stripe.com/v1/checkout/sessions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${env.STRIPE_SECRET_KEY}`,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: params.toString(),
+    });
+  } catch (e) {
+    console.error("Stripe injoignable", e);
+    return json({ erreur: "Le paiement n'a pas pu démarrer. Réessayez dans un instant." }, 502);
+  }
   const session = await reponse.json().catch(() => ({}));
 
   if (!reponse.ok || !session.url) {
