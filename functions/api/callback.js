@@ -20,8 +20,8 @@ export async function onRequestGet({ request, env }) {
       "User-Agent": "lasheane-admin",
     },
     body: JSON.stringify({
-      client_id: env.GITHUB_CLIENT_ID,
-      client_secret: env.GITHUB_CLIENT_SECRET,
+      client_id: String(env.GITHUB_CLIENT_ID || "").trim(),
+      client_secret: String(env.GITHUB_CLIENT_SECRET || "").trim(),
       code,
       redirect_uri: `${url.origin}/api/callback`,
     }),
