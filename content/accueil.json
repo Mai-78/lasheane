@@ -1,0 +1,114 @@
+{
+  "hero": {
+    "surtitre": "Extensions de cils en clusters",
+    "titre": "Des cils de pro,",
+    "titre_italique": "posés en 2 minutes.",
+    "texte": "Des clusters prêts à poser, avec colle intégrée. Imaginés par une lash artist pour retrouver le rendu d'une pose en salon, chez vous.",
+    "bouton": "Shop now",
+    "lien": "Découvrir le Manga Lashes Kit",
+    "image": "/img/manga-hero.jpg",
+    "image_alt": "Manga Lashes Kit Lashéane posé dans un feuillage vert",
+    "etiquette": "Manga Lashes Kit",
+    "etiquette_detail": "Best-seller",
+    "infos_offre": [
+      "Offre de lancement",
+      "29,99 € le kit complet",
+      "100 premières commandes"
+    ],
+    "infos": [
+      "Colle intégrée",
+      "Effet salon",
+      "Sans rendez-vous"
+    ]
+  },
+  "promesses": [
+    {
+      "titre": "2 minutes",
+      "texte": "Une pose rapide, sans rendez-vous."
+    },
+    {
+      "titre": "Colle intégrée",
+      "texte": "Colle et fixateur inclus dans chaque kit."
+    },
+    {
+      "titre": "Tenue longue durée",
+      "texte": "Une fixation pensée pour durer."
+    },
+    {
+      "titre": "Waterproof",
+      "texte": "Une formule qui résiste à l'eau."
+    }
+  ],
+  "collection": {
+    "surtitre": "La collection",
+    "titre": "Trois regards,",
+    "titre_italique": "un seul geste.",
+    "texte": "Discret, volume ou wispy intense : choisissez votre effet. Chaque kit contient tout le nécessaire, cils compris : colle, fixateur, remover, pince applicatrice et miroir."
+  },
+  "manga": {
+    "produit": "manga",
+    "surtitre": "La signature Lashéane",
+    "titre": "Manga Lashes Kit",
+    "sous_titre": "L'effet wispy, en version luxe.",
+    "texte": "Notre gamme luxury et notre best-seller. Des clusters travaillés en mèches fines pour un effet wispy intense : le regard s'ouvre, s'allonge et gagne en caractère.",
+    "image": "/img/manga-feuillage.jpg",
+    "image_alt": "Manga Lashes Kit au cœur d'un feuillage",
+    "attributs": [
+      {
+        "label": "Effet",
+        "valeur": "Wispy intense"
+      },
+      {
+        "label": "Regard",
+        "valeur": "Profond et sophistiqué"
+      },
+      {
+        "label": "Style",
+        "valeur": "Audacieux"
+      }
+    ]
+  },
+  "rituel": {
+    "surtitre": "Le rituel",
+    "titre": "Trois gestes,",
+    "titre_italique": "deux minutes.",
+    "image": "/img/coffret-ouvert.jpg",
+    "image_alt": "Kit Lashéane ouvert : miroir, plateau de cils en clusters, pince, colle, fixateur et remover",
+    "legende": "L'intérieur d'un kit Lashéane",
+    "etapes": [
+      {
+        "titre": "Bond",
+        "texte": "Appliquez une fine couche de colle sous vos cils naturels."
+      },
+      {
+        "titre": "Apply",
+        "texte": "Posez les clusters sous vos cils en partant du coin externe, sans toucher la peau. Pressez 5 secondes avec la pince."
+      },
+      {
+        "titre": "Seal",
+        "texte": "Scellez la base avec un peu de fixateur pour tenir la pose."
+      }
+    ],
+    "contenu_titre": "Dans chaque kit",
+    "contenu": [
+      "Les cils en clusters",
+      "La colle",
+      "Le fixateur",
+      "Le remover",
+      "La pince applicatrice",
+      "Le miroir"
+    ],
+    "contenu_note": "Tout est inclus dans le prix du kit.",
+    "retrait": "Appliquez le remover à la base des cils, massez doucement, puis faites glisser les clusters. Rincez et séchez vos yeux."
+  },
+  "appel": {
+    "surtitre": "Lashes in 2 minutes",
+    "titre": "Votre regard,",
+    "titre_italique": "prêt avant votre café.",
+    "bouton": "Shop now"
+  },
+  "seo": {
+    "titre": "Lashéane · Extensions de cils en clusters, posées en 2 minutes",
+    "description": "Kits d'extensions de cils en clusters, prêts à poser en 2 minutes avec colle intégrée. Natural, Glamour et Manga Lashes Kit."
+  }
+}

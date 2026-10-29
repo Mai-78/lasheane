@@ -1,0 +1,16 @@
+{
+  "offre_active": true,
+  "offre_bandeau": "Offre de lancement · Tous les kits à 29,99 € pour les 100 premières commandes",
+  "offre_mention": "Prix de lancement",
+  "offre_appel": "Tous les kits à 29,99 € pour les 100 premières commandes.",
+  "bandeau": "Prêtes à poser en 2 minutes · Colle intégrée dans chaque kit",
+  "livraison_nom": "Livraison standard",
+  "livraison_prix": 0,
+  "livraison_offerte_des": 0,
+  "livraison_jours_min": 2,
+  "livraison_jours_max": 5,
+  "pays": [
+    "FR"
+  ],
+  "panier_note": "Paiement sécurisé par carte bancaire."
+}

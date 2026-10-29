@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Administration · Lashéane</title>
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url">
+</head>
+<body>
+  <script>window.CMS_MANUAL_INIT = true;</script>
+  <script src="https://unpkg.com/decap-cms@3.16.3/dist/decap-cms.js"></script>
+  <script>
+    // La connexion passe par le site lui-même (/api/auth), quelle que soit son adresse.
+    CMS.init({ config: { backend: { base_url: window.location.origin } } });
+  </script>
+</body>
+</html>

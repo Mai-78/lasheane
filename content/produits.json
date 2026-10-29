@@ -1,0 +1,43 @@
+{
+  "produits": [
+    {
+      "id": "manga",
+      "nom": "Manga Lashes Kit",
+      "effet": "Effet wispy intense",
+      "description": "Un regard profond, sophistiqué et audacieux. Notre gamme luxury.",
+      "prix_lancement": 29.99,
+      "prix": 40.99,
+      "image": "/img/manga-carre.jpg",
+      "image_alt": "Manga Lashes Kit dans un feuillage",
+      "badge": "Best-seller · Signature",
+      "signature": true,
+      "disponible": true
+    },
+    {
+      "id": "natural",
+      "nom": "Natural Lashes Kit",
+      "effet": "Effet cil à cil",
+      "description": "Discret et naturel, comme une pose classique d'extensions.",
+      "prix_lancement": 29.99,
+      "prix": 35.99,
+      "image": "/img/natural.jpg",
+      "image_alt": "Natural Lashes Kit et sa notice d'application",
+      "badge": "",
+      "signature": false,
+      "disponible": true
+    },
+    {
+      "id": "glamour",
+      "nom": "Glamour Lashes Kit",
+      "effet": "Effet volume",
+      "description": "Un volume élégant et féminin, pour un regard qui s'affirme.",
+      "prix_lancement": 29.99,
+      "prix": 45.99,
+      "image": "/img/glamour.jpg",
+      "image_alt": "Kit Glamour ouvert : cils en clusters, pince, colle, fixateur et remover",
+      "badge": "",
+      "signature": false,
+      "disponible": true
+    }
+  ]
+}

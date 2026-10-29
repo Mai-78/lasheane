@@ -1,0 +1,294 @@
+# Configuration de l'administration Lashéane (Decap CMS).
+# Chaque enregistrement dans l'administration met le site à jour en 1 à 2 minutes.
+
+backend:
+  name: github
+  repo: Mai-78/lasheane
+  branch: main
+  auth_endpoint: api/auth
+  commit_messages:
+    update: "Administration : mise à jour de {{slug}}"
+    uploadMedia: "Administration : ajout de l'image {{path}}"
+    deleteMedia: "Administration : suppression de l'image {{path}}"
+
+locale: fr
+site_url: /
+display_url: /
+media_folder: static/img
+public_folder: /img
+
+collections:
+  - name: site
+    label: Mon site
+    format: json
+    editor:
+      preview: false
+    files:
+
+      # ------------------------------------------------------------------
+      - name: boutique
+        label: "Prix, offre et livraison"
+        file: content/boutique.json
+        fields:
+          - label: "Offre de lancement en cours"
+            name: offre_active
+            widget: boolean
+            hint: "Décochez à la fin de l'offre : le site affichera automatiquement les prix normaux et retirera les mentions de lancement."
+          - { label: "Bandeau du haut pendant l'offre", name: offre_bandeau, widget: string }
+          - label: "Mention sous les prix pendant l'offre"
+            name: offre_mention
+            widget: string
+            hint: "Exemple : Prix de lancement. Le prix normal est ajouté automatiquement après (« puis 40,99 € »)."
+          - { label: "Phrase de l'offre (bas de page et panier)", name: offre_appel, widget: string }
+          - { label: "Bandeau du haut après l'offre", name: bandeau, widget: string }
+          - { label: "Nom de la livraison (affiché au paiement)", name: livraison_nom, widget: string }
+          - label: "Frais de livraison (€)"
+            name: livraison_prix
+            widget: number
+            value_type: float
+            step: 0.01
+            min: 0
+            hint: "0 = livraison gratuite."
+          - label: "Livraison offerte dès (€ d'achat)"
+            name: livraison_offerte_des
+            widget: number
+            value_type: float
+            step: 0.01
+            min: 0
+            hint: "0 = jamais offerte."
+          - { label: "Délai de livraison minimum (jours ouvrés)", name: livraison_jours_min, widget: number, value_type: int, min: 0 }
+          - { label: "Délai de livraison maximum (jours ouvrés)", name: livraison_jours_max, widget: number, value_type: int, min: 0 }
+          - label: "Pays de livraison"
+            name: pays
+            widget: select
+            multiple: true
+            min: 1
+            options:
+              - { label: "France", value: "FR" }
+              - { label: "Guadeloupe", value: "GP" }
+              - { label: "Martinique", value: "MQ" }
+              - { label: "Guyane", value: "GF" }
+              - { label: "La Réunion", value: "RE" }
+              - { label: "Mayotte", value: "YT" }
+              - { label: "Belgique", value: "BE" }
+              - { label: "Luxembourg", value: "LU" }
+              - { label: "Suisse", value: "CH" }
+              - { label: "Monaco", value: "MC" }
+              - { label: "Allemagne", value: "DE" }
+              - { label: "Espagne", value: "ES" }
+              - { label: "Italie", value: "IT" }
+              - { label: "Pays-Bas", value: "NL" }
+              - { label: "Portugal", value: "PT" }
+              - { label: "Royaume-Uni", value: "GB" }
+              - { label: "Canada", value: "CA" }
+          - { label: "Petite note dans le panier", name: panier_note, widget: string, required: false }
+
+      # ------------------------------------------------------------------
+      - name: produits
+        label: "Les kits"
+        file: content/produits.json
+        fields:
+          - label: "Kits"
+            name: produits
+            widget: list
+            label_singular: "kit"
+            summary: "{{fields.nom}}"
+            collapsed: true
+            fields:
+              - { label: "Nom du kit", name: nom, widget: string }
+              - label: "Identifiant"
+                name: id
+                widget: string
+                pattern: ["^[a-z0-9-]+$", "Lettres minuscules, chiffres et tirets uniquement, sans espace ni accent."]
+                hint: "Exemple : manga. Ne le changez plus une fois le site lancé."
+              - { label: "Effet (petit texte au-dessus du nom)", name: effet, widget: string, required: false }
+              - { label: "Description", name: description, widget: text }
+              - label: "Prix pendant l'offre de lancement (€)"
+                name: prix_lancement
+                widget: number
+                value_type: float
+                step: 0.01
+                min: 0
+                required: false
+              - label: "Prix normal (€)"
+                name: prix
+                widget: number
+                value_type: float
+                step: 0.01
+                min: 0
+              - { label: "Photo", name: image, widget: image, choose_url: false }
+              - { label: "Description de la photo (pour les malvoyants et Google)", name: image_alt, widget: string, required: false }
+              - { label: "Badge sur la photo (ex. Best-seller)", name: badge, widget: string, required: false }
+              - { label: "Mettre en avant (carte sur fond vert)", name: signature, widget: boolean, default: false }
+              - { label: "Disponible à la vente", name: disponible, widget: boolean, default: true, hint: "Décochez en cas de rupture de stock : le bouton devient « Bientôt de retour »." }
+
+      # ------------------------------------------------------------------
+      - name: accueil
+        label: "Page d'accueil"
+        file: content/accueil.json
+        fields:
+          - label: "Haut de page"
+            name: hero
+            widget: object
+            collapsed: true
+            fields:
+              - { label: "Petit titre", name: surtitre, widget: string, required: false }
+              - { label: "Grand titre (début)", name: titre, widget: string }
+              - { label: "Grand titre (fin, en italique)", name: titre_italique, widget: string, required: false }
+              - { label: "Texte", name: texte, widget: text, required: false }
+              - { label: "Texte du bouton", name: bouton, widget: string }
+              - { label: "Lien vers la section signature", name: lien, widget: string, required: false }
+              - { label: "Grande photo", name: image, widget: image, choose_url: false }
+              - { label: "Description de la photo", name: image_alt, widget: string, required: false }
+              - { label: "Étiquette sur la photo", name: etiquette, widget: string, required: false }
+              - { label: "Détail de l'étiquette", name: etiquette_detail, widget: string, required: false }
+              - label: "Petites infos sous le bouton (pendant l'offre)"
+                name: infos_offre
+                widget: list
+                required: false
+                field: { label: "Info", name: info, widget: string }
+              - label: "Petites infos sous le bouton (après l'offre)"
+                name: infos
+                widget: list
+                required: false
+                field: { label: "Info", name: info, widget: string }
+          - label: "Engagements (bandeau noir)"
+            name: promesses
+            widget: list
+            label_singular: "engagement"
+            max: 4
+            summary: "{{fields.titre}}"
+            fields:
+              - { label: "Titre", name: titre, widget: string }
+              - { label: "Texte", name: texte, widget: string }
+          - label: "Section collection"
+            name: collection
+            widget: object
+            collapsed: true
+            fields:
+              - { label: "Petit titre", name: surtitre, widget: string, required: false }
+              - { label: "Titre (début)", name: titre, widget: string }
+              - { label: "Titre (fin, en italique)", name: titre_italique, widget: string, required: false }
+              - { label: "Texte", name: texte, widget: text, required: false }
+          - label: "Section signature (Manga)"
+            name: manga
+            widget: object
+            collapsed: true
+            fields:
+              - { label: "Identifiant du kit mis en avant", name: produit, widget: string, hint: "Identifiant indiqué dans « Les kits » (ex. manga)." }
+              - { label: "Petit titre", name: surtitre, widget: string, required: false }
+              - { label: "Titre", name: titre, widget: string }
+              - { label: "Sous-titre (en italique)", name: sous_titre, widget: string, required: false }
+              - { label: "Texte", name: texte, widget: text, required: false }
+              - { label: "Photo", name: image, widget: image, choose_url: false }
+              - { label: "Description de la photo", name: image_alt, widget: string, required: false }
+              - label: "Caractéristiques"
+                name: attributs
+                widget: list
+                required: false
+                summary: "{{fields.label}} : {{fields.valeur}}"
+                fields:
+                  - { label: "Nom", name: label, widget: string }
+                  - { label: "Valeur", name: valeur, widget: string }
+          - label: "Section rituel"
+            name: rituel
+            widget: object
+            collapsed: true
+            fields:
+              - { label: "Petit titre", name: surtitre, widget: string, required: false }
+              - { label: "Titre (début)", name: titre, widget: string }
+              - { label: "Titre (fin, en italique)", name: titre_italique, widget: string, required: false }
+              - { label: "Photo", name: image, widget: image, choose_url: false }
+              - { label: "Description de la photo", name: image_alt, widget: string, required: false }
+              - { label: "Légende de la photo", name: legende, widget: string, required: false }
+              - label: "Étapes"
+                name: etapes
+                widget: list
+                summary: "{{fields.titre}}"
+                fields:
+                  - { label: "Titre", name: titre, widget: string }
+                  - { label: "Texte", name: texte, widget: text }
+              - { label: "Titre du contenu du kit", name: contenu_titre, widget: string, required: false }
+              - label: "Contenu du kit"
+                name: contenu
+                widget: list
+                required: false
+                field: { label: "Élément", name: element, widget: string }
+              - { label: "Note sous le contenu", name: contenu_note, widget: string, required: false }
+              - { label: "Conseil de retrait", name: retrait, widget: text, required: false }
+          - label: "Bas de page (appel final)"
+            name: appel
+            widget: object
+            collapsed: true
+            fields:
+              - { label: "Petit titre", name: surtitre, widget: string, required: false }
+              - { label: "Titre (début)", name: titre, widget: string }
+              - { label: "Titre (fin, en italique)", name: titre_italique, widget: string, required: false }
+              - { label: "Texte du bouton", name: bouton, widget: string }
+          - label: "Référencement Google"
+            name: seo
+            widget: object
+            collapsed: true
+            fields:
+              - { label: "Titre de l'onglet et de Google", name: titre, widget: string }
+              - { label: "Description dans Google", name: description, widget: text }
+
+      # ------------------------------------------------------------------
+      - name: histoire
+        label: "Notre histoire"
+        file: content/histoire.json
+        fields:
+          - { label: "Petit titre", name: surtitre, widget: string, required: false }
+          - { label: "Titre (début)", name: titre, widget: string }
+          - { label: "Titre (fin, en italique)", name: titre_italique, widget: string, required: false }
+          - label: "Paragraphes"
+            name: paragraphes
+            widget: list
+            field: { label: "Paragraphe", name: paragraphe, widget: text }
+          - label: "Points forts (liste avec filets dorés)"
+            name: besoins
+            widget: list
+            required: false
+            field: { label: "Point fort", name: point, widget: string }
+          - { label: "Signature", name: signature, widget: string, required: false }
+          - { label: "Détail de la signature", name: signature_detail, widget: string, required: false }
+          - { label: "Photo", name: image, widget: image, choose_url: false }
+          - { label: "Description de la photo", name: image_alt, widget: string, required: false }
+
+      # ------------------------------------------------------------------
+      - name: contact
+        label: "Contact et réseaux"
+        file: content/contact.json
+        fields:
+          - label: "Email de contact"
+            name: email
+            widget: string
+            required: false
+            pattern: ["^$|^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$", "Adresse email invalide."]
+          - { label: "Titre au-dessus des réseaux", name: reseaux_titre, widget: string, required: false }
+          - { label: "Nom d'utilisateur affiché", name: pseudo, widget: string, required: false }
+          - label: "Lien Instagram"
+            name: instagram
+            widget: string
+            required: false
+            pattern: ["^$|^https://", "Le lien doit commencer par https://"]
+          - label: "Lien TikTok"
+            name: tiktok
+            widget: string
+            required: false
+            pattern: ["^$|^https://", "Le lien doit commencer par https://"]
+
+      # ------------------------------------------------------------------
+      - name: couleurs
+        label: "Couleurs"
+        file: content/couleurs.json
+        fields:
+          - { label: "Noir (fonds sombres)", name: noir, widget: color }
+          - { label: "Ivoire (fonds clairs et titres sur fond sombre)", name: ivoire, widget: color }
+          - { label: "Nude (sections beige)", name: nude, widget: color }
+          - { label: "Vert feuillage", name: vert, widget: color }
+          - { label: "Champagne (boutons, accents)", name: champagne, widget: color }
+          - { label: "Doré (filets et numéros)", name: or, widget: color }
+          - { label: "Texte principal sur fond clair", name: encre, widget: color }
+          - { label: "Texte secondaire sur fond clair", name: taupe, widget: color }
+          - { label: "Texte secondaire sur fond sombre", name: brume, widget: color }
