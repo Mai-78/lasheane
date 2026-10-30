@@ -19,11 +19,17 @@ export async function onRequestPost(context) {
     return json({ erreur: "Panier illisible. Rechargez la page et réessayez." }, 400);
   }
 
-  let catalogue, boutique;
+  // Acceptation des CGV, cochée dans le panier (preuve conservée dans Stripe, voir metadata).
+  if (corps?.cgv !== true) {
+    return json({ erreur: "Cochez la case pour accepter les conditions générales de vente." }, 400);
+  }
+
+  let catalogue, boutique, legal;
   try {
-    [catalogue, boutique] = await Promise.all([
+    [catalogue, boutique, legal] = await Promise.all([
       lireContenu(context, "/content/produits.json"),
       lireContenu(context, "/content/boutique.json"),
+      lireContenu(context, "/content/legal.json").catch(() => ({})),
     ]);
   } catch (e) {
     console.error(e);
@@ -63,8 +69,15 @@ export async function onRequestPost(context) {
   params.append("success_url", `${origine}/merci?session_id={CHECKOUT_SESSION_ID}`);
   params.append("cancel_url", `${origine}/#collection`);
   params.append("allow_promotion_codes", "true");
-  params.append("phone_number_collection[enabled]", "true");
+  // Données minimales : pas de numéro de téléphone demandé (non nécessaire à la livraison).
   params.append("metadata[source]", "site-lasheane");
+  params.append("metadata[cgv_acceptees_le]", new Date().toISOString());
+  params.append("metadata[cgv_version]", String(legal?.date_maj || "").slice(0, 40));
+  params.append(
+    "custom_text[submit][message]",
+    `En payant, vous confirmez accepter nos conditions générales de vente (${origine}/cgv). `
+      + `Vous pouvez vous rétracter sous 14 jours après réception : ${origine}/retractation`,
+  );
 
   let sousTotal = 0;
   lignes.forEach(({ p, quantite, centimes }, i) => {

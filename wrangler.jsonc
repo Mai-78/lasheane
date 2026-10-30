@@ -14,7 +14,12 @@
   },
   // Garde les variables et secrets saisis dans le tableau de bord Cloudflare.
   "keep_vars": true,
+  // Minimisation des données : pas de journal de chaque visite (invocation_logs),
+  // seulement les messages d'erreur techniques, conservés 3 jours par Cloudflare.
   "observability": {
-    "enabled": true
+    "enabled": true,
+    "logs": {
+      "invocation_logs": false
+    }
   }
 }

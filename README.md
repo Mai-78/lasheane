@@ -47,6 +47,21 @@ L'adresse du site s'affiche dans Cloudflare, sur la page du projet, sous la form
 4. Dans Stripe : **Paramètres** › **E-mails clients**, activer l'envoi d'un reçu après chaque paiement réussi.
 5. Tester avec la clé `sk_test_` et la carte `4242 4242 4242 4242` (date future, n'importe quel code). Remplacer ensuite la clé par `sk_live_` pour le lancement.
 
+### 3 bis. Emails de rétractation (Brevo)
+
+La fonction « Renoncer au contrat ici » (/retractation), obligatoire depuis le 19 juin 2026, envoie un accusé de réception par email. Sans cette configuration, la page indique à la cliente que sa demande n'a pas été transmise et lui propose de l'envoyer par email.
+
+1. Créer un compte gratuit sur [brevo.com](https://www.brevo.com) avec l'email de la boutique, puis valider cette adresse comme expéditeur.
+2. Dans Brevo : **SMTP & API** › **Clés API**, puis créer une clé.
+3. Dans Cloudflare, au même endroit que les autres secrets, ajouter :
+   - `BREVO_API_KEY` (Secret) : la clé Brevo
+   - `EMAIL_EXPEDITEUR` (Secret ou texte) : l'adresse validée dans Brevo
+4. Tester : remplir le formulaire /retractation avec sa propre adresse, puis vérifier la réception de l'accusé et de la copie.
+
+### 3 ter. Informations légales
+
+Dans l'administration, rubrique **Informations légales** : nom, statut (EI…), adresse, téléphone, SIRET, mention TVA, médiateur de la consommation, transporteur. Tant qu'un champ manque, les pages légales affichent « [À compléter : …] ».
+
 ### 4. Donner l'accès à la cliente
 
 1. La cliente crée un compte GitHub gratuit.

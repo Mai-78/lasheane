@@ -247,6 +247,11 @@ collections:
             fields:
               - { label: "Titre de l'onglet et de Google", name: titre, widget: string }
               - { label: "Description dans Google", name: description, widget: text }
+              - label: "Adresse du site"
+                name: site_url
+                widget: string
+                pattern: ["^https://[^\\s/]+$", "Adresse complète sans / final, par exemple https://lasheane.fr"]
+                hint: "À changer quand le nom de domaine sera branché (par exemple https://lasheane.fr). Sert au référencement et aux agents IA."
 
       # ------------------------------------------------------------------
       - name: histoire
@@ -294,11 +299,57 @@ collections:
             pattern: ["^$|^https://", "Le lien doit commencer par https://"]
 
       # ------------------------------------------------------------------
+      - name: legal
+        label: "Informations légales"
+        file: content/legal.json
+        fields:
+          - label: "Nom et prénom, ou raison sociale"
+            name: nom
+            widget: string
+            hint: "Obligatoire pour vendre en ligne. Apparaît dans les mentions légales, les CGV et la politique de confidentialité."
+          - label: "Statut juridique"
+            name: statut
+            widget: string
+            hint: "Exemple : Entrepreneur individuel (EI), micro-entreprise. La mention « EI » est obligatoire pour une entreprise individuelle."
+          - { label: "Adresse postale", name: adresse, widget: text }
+          - { label: "Téléphone", name: telephone, widget: string, hint: "Obligatoire dans les mentions légales." }
+          - label: "Email (si différent de l'email de contact)"
+            name: email
+            widget: string
+            required: false
+            pattern: ["^$|^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$", "Adresse email invalide."]
+          - { label: "Numéro SIRET", name: siret, widget: string }
+          - { label: "Immatriculation (RNE ou RCS)", name: immatriculation, widget: string, required: false, hint: "Exemple : Immatriculée au RNE sous le n° … ou RCS Paris n° …" }
+          - { label: "Capital social (sociétés uniquement)", name: capital, widget: string, required: false }
+          - label: "Mention TVA"
+            name: tva
+            widget: string
+            hint: "« TVA non applicable, art. 293 B du CGI » en franchise de TVA, sinon « TVA intracommunautaire : FR… »."
+          - { label: "Directeur ou directrice de la publication", name: directeur_publication, widget: string, required: false, hint: "Laissez vide si c'est la même personne que ci-dessus." }
+          - { label: "Médiateur de la consommation : nom", name: mediateur_nom, widget: string, required: false, hint: "Obligatoire : adhérez à un médiateur agréé (liste sur economie.gouv.fr, rubrique médiation de la consommation)." }
+          - { label: "Médiateur : adresse", name: mediateur_adresse, widget: string, required: false }
+          - label: "Médiateur : site internet"
+            name: mediateur_site
+            widget: string
+            required: false
+            pattern: ["^$|^https://", "Le lien doit commencer par https://"]
+          - { label: "Adresse de retour des colis (si différente)", name: adresse_retour, widget: text, required: false }
+          - { label: "Transporteur", name: transporteur, widget: string, required: false, hint: "Exemple : La Poste (Colissimo)" }
+          - { label: "Délai d'expédition", name: delai_expedition, widget: string, required: false, hint: "Exemple : 2 jours ouvrés" }
+          - label: "Date de mise à jour des conditions"
+            name: date_maj
+            widget: datetime
+            format: "YYYY-MM-DD"
+            date_format: "DD/MM/YYYY"
+            time_format: false
+            hint: "À changer à chaque modification des conditions générales de vente."
+
+      # ------------------------------------------------------------------
       - name: couleurs
         label: "Couleurs"
         file: content/couleurs.json
         fields:
-          - { label: "Noir (fonds sombres)", name: noir, widget: color }
+          - { label: "Noir (fonds sombres)", name: noir, widget: color, hint: "Accessibilité : gardez un fort contraste entre chaque texte et son fond, pour que le site reste lisible par tous." }
           - { label: "Ivoire (fonds clairs et titres sur fond sombre)", name: ivoire, widget: color }
           - { label: "Nude (sections beige)", name: nude, widget: color }
           - { label: "Vert feuillage", name: vert, widget: color }
