@@ -38,7 +38,22 @@ collections:
           - label: "Mention sous les prix pendant l'offre"
             name: offre_mention
             widget: string
-            hint: "Exemple : Prix de lancement. Le prix normal est ajouté automatiquement après (« puis 40,99 € »)."
+            hint: "Exemple : Prix de lancement. Le prix normal est ajouté automatiquement après (« puis 40,99 € »). Utilisée quand le prix barré est désactivé."
+          - label: "Afficher le prix normal barré"
+            name: prix_barre
+            widget: boolean
+            default: false
+            hint: "Affiche 29,99 € à côté du prix normal barré et du pourcentage de réduction. Règle légale : le prix barré doit être le prix le plus bas réellement pratiqué dans les 30 jours avant l'offre. N'activez que si c'est le cas, et gardez une preuve de ces ventes."
+          - label: "Mention sous le prix barré"
+            name: offre_detail
+            widget: string
+            required: false
+            hint: "Exemple : Réservé aux 100 premières commandes."
+          - label: "Badge sur les photos des kits pendant l'offre"
+            name: offre_badge
+            widget: string
+            required: false
+            hint: "Exemple : Offre de lancement. Laissez vide pour ne pas afficher de badge."
           - { label: "Phrase de l'offre (bas de page et panier)", name: offre_appel, widget: string }
           - { label: "Bandeau du haut après l'offre", name: bandeau, widget: string }
           - { label: "Nom de la livraison (affiché au paiement)", name: livraison_nom, widget: string }

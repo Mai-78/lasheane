@@ -46,6 +46,35 @@ const mentionPrix = (p) => {
   if (!offreActive || !(lancement > 0) || !(normal > lancement)) return "";
   return `${boutique.offre_mention || "Prix de lancement"} · puis ${euros(normal)}`;
 };
+const enPromo = (p) => {
+  const lancement = nombre(p.prix_lancement);
+  return offreActive && lancement > 0 && nombre(p.prix) > lancement;
+};
+
+// Prix barré : activé depuis l'administration (Prix, offre et livraison).
+// Rappel légal : le prix barré doit être le prix le plus bas réellement pratiqué
+// dans les 30 jours précédant l'offre.
+const prixBarreActif = offreActive && boutique.prix_barre === true;
+const affichagePrix = (p) => {
+  const actuel = prixActuel(p);
+  if (prixBarreActif && enPromo(p)) {
+    const normal = nombre(p.prix);
+    const remise = Math.round((1 - actuel / normal) * 100);
+    return {
+      ligne: `<span class="prix-montant">${euros(actuel)}</span>`
+        + `<s class="prix-barre"><span class="masque">Prix normal : </span>${euros(normal)}</s>`
+        + `<span class="prix-remise">−${remise} %</span>`,
+      note: boutique.offre_detail || "",
+    };
+  }
+  return { ligne: `<span class="prix-montant">${euros(actuel)}</span>`, note: mentionPrix(p) };
+};
+const blocPrix = (p) => {
+  const { ligne, note } = affichagePrix(p);
+  return `<div class="prix"><div class="prix-ligne">${ligne}</div>${note ? `<span class="prix-note">${esc(note)}</span>` : ""}</div>`;
+};
+const badgeOffre = (p) =>
+  enPromo(p) && boutique.offre_badge ? `<span class="badge badge-offre">${esc(boutique.offre_badge)}</span>` : "";
 
 // Vérifications : on préfère un échec de construction (le site reste sur la version précédente)
 // à un site publié avec un prix manquant.
@@ -198,13 +227,13 @@ const carte = (p) => `
         <article class="produit${p.signature ? " signature" : ""}">
           <figure>
             <img src="${image(p.image)}" alt="${esc(p.image_alt || p.nom)}" width="800" height="800" loading="lazy">
-            ${p.badge ? `<span class="badge">${esc(p.badge)}</span>` : ""}
+            ${p.badge || badgeOffre(p) ? `<div class="badges">${p.badge ? `<span class="badge">${esc(p.badge)}</span>` : ""}${badgeOffre(p)}</div>` : ""}
           </figure>
           <div class="produit-corps">
             ${p.effet ? `<span class="produit-effet">${esc(p.effet)}</span>` : ""}
             <h3>${esc(p.nom)}</h3>
             <p class="produit-desc">${esc(p.description)}</p>
-            <div class="prix"><span class="prix-montant">${euros(prixActuel(p))}</span>${mentionPrix(p) ? `<span class="prix-note">${esc(mentionPrix(p))}</span>` : ""}</div>
+            ${blocPrix(p)}
             ${p.disponible === false
               ? `<button class="btn btn-contour" type="button" disabled>Bientôt de retour</button>`
               : `<button class="btn ${p.signature ? "btn-champagne" : "btn-contour"}" type="button" data-ajout="${esc(p.id)}">Ajouter au panier</button>`}
@@ -270,7 +299,10 @@ ${entete(true)}
         ${m.texte ? `<p>${esc(m.texte)}</p>` : ""}
         <dl class="attributs">
           ${liste(m.attributs).map((a) => `<div><dt>${esc(a.label)}</dt><dd>${esc(a.valeur)}</dd></div>`).join("\n          ")}
-          ${produitManga ? `<div><dt>Prix</dt><dd>${euros(prixActuel(produitManga))}${mentionPrix(produitManga) ? `<small>${esc(mentionPrix(produitManga))}</small>` : ""}</dd></div>` : ""}
+          ${produitManga ? (() => {
+            const { ligne, note } = affichagePrix(produitManga);
+            return `<div><dt>Prix</dt><dd><span class="prix-ligne">${ligne}</span>${note ? `<small>${esc(note)}</small>` : ""}</dd></div>`;
+          })() : ""}
         </dl>
         <div class="manga-actions">
           ${produitManga && produitManga.disponible !== false ? `<button class="btn btn-champagne" type="button" data-ajout="${esc(produitManga.id)}">Ajouter au panier</button>` : ""}

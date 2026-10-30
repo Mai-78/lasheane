@@ -282,12 +282,16 @@ p { margin: 0; }
 .produit figure { position: relative; margin: 0; aspect-ratio: 1; overflow: hidden; max-width: 100%; }
 .produit figure img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s cubic-bezier(.2,.7,.2,1); }
 .produit:hover figure img { transform: scale(1.04); }
+.badges {
+  position: absolute; top: 14px; left: 14px; right: 14px;
+  display: flex; flex-direction: column; align-items: flex-start; gap: 6px;
+}
 .badge {
-  position: absolute; top: 14px; left: 14px;
   padding: 7px 12px;
   background: var(--champagne); color: var(--noir);
   font-size: 11px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase;
 }
+.badge-offre { background: var(--noir); color: var(--champagne); border: 1px solid var(--champagne); }
 .produit-corps { display: flex; flex-direction: column; gap: 10px; padding: 24px 22px 22px; flex: 1; }
 .produit-effet { font-size: var(--t-xs); font-weight: 500; letter-spacing: .26em; text-transform: uppercase; color: var(--or-fonce); }
 .produit h3 { font-size: var(--t-h3); line-height: 1.2; }
@@ -409,6 +413,14 @@ p { margin: 0; }
 
 /* Prix */
 .prix { display: grid; gap: 2px; padding-top: 4px; }
+.prix-ligne { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+.prix-barre { font-family: var(--display); font-size: 1.1rem; color: var(--taupe); text-decoration-thickness: 1px; font-variant-numeric: lining-nums; }
+.prix-remise { align-self: center; padding: 3px 8px; background: var(--noir); color: var(--champagne); font-family: var(--sans); font-size: var(--t-xs); font-weight: 500; letter-spacing: .06em; }
+.produit.signature .prix-barre, .attributs .prix-barre { color: var(--brume); }
+.produit.signature .prix-remise, .attributs .prix-remise { background: var(--champagne); color: var(--noir); }
+.attributs .prix-montant { font-size: inherit; line-height: inherit; }
+.attributs .prix-barre { font-size: .95rem; }
+.masque { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .prix-montant { font-family: var(--display); font-size: 1.65rem; line-height: 1.15; font-variant-numeric: lining-nums; }
 .prix-note { font-size: var(--t-xs); letter-spacing: .14em; text-transform: uppercase; color: var(--taupe); }
 .produit.signature .prix-note { color: var(--brume); }
